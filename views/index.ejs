@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<!-- RAHMAN VE RAHİM OLAN ALLAHIM SENİN YÜCE ADIN İLE 
+    BİZE AKLI , BİLGİYİ VEREN SENSİN.  YAPACAĞIMIZ İŞLERİ KOLAYLAŞTIR,
+    BİZİ BAŞARIYA ULAŞTIR. RAB BİZLERİ RIZKINLA SINAMA. BİZE NİMET VERİP ONU EN İYİ ŞEKİLDE PAYLAŞMAMIZI SAĞLA
+    RABBİMİZ NİĞMET VERİP'TE AZANLARDAN ETME. SEN EN İYİ DEĞERLENDİRENSİN. SANA SIĞININIRIZ. HİÇ KUŞKUMUZ YOKKİ SANA DÖNECEĞİZ. 
+    BİZE HEM BU ALEMDE , HEMDE AHİRET HAYATINDA NİMET VERDİKLERİNDEN YAP. BİZE SELAM OLSUN
+    
+    ALLAHIN RAHMETİ MERHAMETİ ÜZERİMİZE OLSUN
+-->
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Celalettin Erbulut Video Player</title>
+
+<link rel="stylesheet" href="css/swiper.min.css">
+<link rel="stylesheet" href="css/style.css">
+<script src="/socket.io/socket.io.js"></script>
+  <script src="/js/anime.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<style>
+    html, body {
+      position: relative;
+      height: 100%;
+      background-color: black
+      
+    }
+    body {
+      
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      
+      margin: 0px;
+      padding: 0px;
+    }
+    .start{
+      position: absolute;
+      z-index: 3;
+
+    }
+    .logos{
+      position: absolute;
+      z-index: 2;
+      top:0px;
+      width: 150px;
+    }
+    #cxPlayer{
+      width: 100%;
+     
+    }
+  .player{
+    background-color: black
+  }
+  .slider{
+    width: 100%;
+  }
+  .start{
+    position: absolute;
+    z-index: 4;
+      width: 60px;
+    bottom: 0px;
+    
+  }
+</style>
+</head>
+<body>
+
+
+  
+   <div class="start"><img src="img/buton.svg"></div>
+    <div id="cxPlayer">
+        
+        <img class="logos" src="/img/kudus-logo.png">
+      <video height="1000" width="100%" class="player" ></video>
+      <img class="slider" src="">
+
+    <svg class="dataSvg" 
+		height="100%" width="100%" viewBox="0 0 100 100"  preserveAspectRatio="none">
+		  <polygon class="animeSheet" points="196,100 0,100 0,0 33.3,0 196,0 "/>
+		 </svg>
+
+     <div id="swarm">	
+        <div id="heade"></div>
+        <div id="content">
+          <div class="contentHead"><img  src="/img/logo.png"></div>
+          <div class="contentProfilImg"><img  class="userFoto" src="/img/profil.png"></div>
+          <div class="contentMesaj"> <h1>HOŞ GELDİN ! </h1> <h1 class="adi"> HOŞGENDİN ADNINIZ	</h1></div>
+          <hr>
+          <div class="contentBaslik">
+            <div class="contentBaslikSol"><h2> </h2> </div>
+            <div class="contentBaslikSag"><h2> Toplam <span><%= swarm %></span> Check-in</h2> </div>
+          </div>
+          <!-- <div class="contentMekandakiKisiler"> 
+            <ul>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+              <li><img src="img/mekandakiKisiler.png" ></li>
+            </ul>
+          </div>-->
+          <div class="contentIstatistik">
+            <div class="bosluk"></div>
+            <hr>
+            <div class="istatstikToplamCheckin">Toplam Check-in : 58212</div>
+            <div class="istatstikToplamMayor">Mayor : <span>505454</span></div>
+            <div class="bosluk"></div>
+            <hr>
+          </div>
+        </div>
+ </div>     
+ <script>
+    $(".player").hide()
+    $(".slider").hide()
+var socket = io();
+var dataSvg = document.getElementsByClassName("dataSvg")[0].style.display="none";
+		console.log(dataSvg)
+function  Get(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return JSON.parse(xmlHttp.responseText);
+}
+var video = document.querySelector(".player")
+var  list = Get("/api/video");  
+
+var button = document.querySelector(".start")
+var say = 0;
+var toplamPlayer =  list.length;
+button.addEventListener("click",()=>{
+  openFullscreen()
+
+  if(say ==0){
+    socket.emit("video start","1")
+  }
+  say++
+    
+
+    socket.on("video onay",(onay)=>{
+     console.log(onay)
+      if(onay.type=="image"){
+        //$(".player").attr("poster","upload/video/"+onay.file)
+        $(".player").hide()
+        $(".slider").show()
+        $(".slider").attr("src","upload/"+onay.file)
+          console.log("image")
+          setTimeout(()=>{
+            socket.emit("video start","1")
+          },10000)
+      }
+      if(onay.type=="video/mp4"){
+        $(".slider").hide()
+        $(".player").show()
+        $(".player").attr("src","/video/"+onay._id)
+        setTimeout(()=>{ video.play() ;   },500)
+        console.log("video  ")
+        var sil =  setInterval(()=>{
+          var videoToplamSure = video.duration
+         var vsure =  video.currentTime
+         console.log(vsure)
+         if(videoToplamSure == vsure){
+                          onay.say = say++;
+                          socket.emit("video start","1")
+                            clearInterval(sil)
+           }
+        },100)
+
+      }
+      
+        
+   })
+   
+   
+   
+})
+
+var socket2 = io("https://erbulut.com");
+ socket2.on("checkin",function(data){
+			document.getElementsByClassName("dataSvg")[0].style.display="block";
+				var json = JSON.parse(data);
+				var cekIsism = document.querySelector(".adi").innerHTML = json.user.firstName + " "+ json.user.lastName ;
+				var userFoto = document.querySelector(".userFoto").src =json.user.photo.prefix + json.user.id + json.user.photo.suffix  ;
+					//json.user.photo.prefix + json.user.id + json.user.photo.suffix 
+				//console.dir(json)
+				//console.dir(userFoto)
+				
+			console.log(data)
+
+			var morphing = anime({
+			targets: '.animeSheet',
+			points: [
+				{ value: '196,100 0,100 0,0 33.3,0 60.3,67.2' },
+				{ value: '196,100 0,100 0,0 70.3,68' },
+				{ value: '196,100 0,100 0,0 0,100' },
+				
+			],
+			easing: 'easeOutQuad',
+			duration: 2000,
+			loop: false
+			});
+			
+			
+			var swarm = document.getElementById("swarm").style.display = "block";
+
+			setTimeout(function(){
+        var swarm = document.getElementById("swarm").style.display = "none";
+        var dataSvg = document.getElementsByClassName("dataSvg")[0].style.display="none";
+			},10000)
+
+		  })
+
+function openFullscreen() {
+var elem = document.querySelector("#cxPlayer");
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.mozRequestFullScreen) { /* Firefox */
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    elem.msRequestFullscreen();
+  }
+} 
+
+  </script>
+</body>
+</html>
