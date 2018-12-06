@@ -21,13 +21,13 @@ router.get('/', function(req, res, next) {
   });
 
   router.get('/giris', function(req, res, next) {
-    res.render('admin/index', { video: req.video , swarm:req.checkin,path: req.path});
+    res.render('admin/index', { vuser: {user:req.user,id:req.id},video: req.video , swarm:req.checkin,path: req.path});
     //res.render('index')
       console.log("CELLO",req.url)
 });
   
 router.get('/videoekle',loggedin,  (req, res, next)=> {
-    res.render('admin/index', { video: req.video , swarm:req.checkin,path: req.path});
+    res.render('admin/index', { vuser: {user:req.user,id:req.id},video: req.video , swarm:req.checkin,path: req.path});
     console.log("CELLO",req.originalUrl)
 });
 
@@ -42,10 +42,16 @@ router.post("/videoCount",(req,res,next)=>{
             }) 
             
 })
+router.get("/genelAyar",loggedin,(req,res,next)=>{
 
+        //res.send("genel ayar")
+        //res.render("/admin/genelayar")
+        res.render('admin/index', { vuser: {user:req.user,id:req.id},video: req.video , swarm:req.checkin,path: req.path});
+
+})
 router.post("/sil",loggedin,(req,res)=>{
-    let id = req.body.id
-    const promise = Video.findById(id)
+    const id = req.body.id;
+    const promise = Video.findById(id);
           promise.then((data)=>{
 
             console.log(data)
