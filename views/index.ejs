@@ -71,7 +71,7 @@
     <div id="cxPlayer">
         
         <img class="logos" src="/img/kudus-logo.png">
-      <video height="1000" width="100%" class="player" ></video>
+      <video height="1000" width="100%" class="player" controls ></video>
       <img class="slider" src="">
 
     <svg class="dataSvg" 
@@ -158,7 +158,7 @@ button.addEventListener("click",()=>{
             socket.emit("video start","1")
           },10000)
       }
-      if(onay.type=="video/mp4"){
+      if(onay.type=="video/mp4" || onay.type=="video/quicktime"){
         $(".slider").hide()
         $(".player").show()
         $(".player").attr("src","/video/"+onay._id)

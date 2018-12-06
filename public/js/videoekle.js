@@ -34,7 +34,7 @@ $(".uploadButton").click(function (e) {
                             $(".progress-bar").html(" "+percentComplete+"%")
                         if (percentComplete === 100) {
 
-                            location.reload(); 
+                        
 
                         }
 
@@ -50,6 +50,7 @@ $(".uploadButton").click(function (e) {
             type: 'POST',
             success: function(data,textStatus, jqXHR){
                console.log(data)
+               location.reload(); 
               if(Array.isArray(data) == true){
                    console.log(data)
                   data.shift()

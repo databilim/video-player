@@ -41,11 +41,11 @@ router.get('/logout', function (req, res) {
 
 
 router.get('/video/:video_id', function(req, res) {
- 
+  console.log("data.file")
   const promise = Video.findById(req.params.video_id);
     promise.then((data) => {
-      console.log(data.file)
-    if(data.type=="video/mp4"){
+      
+    if((data.type=="video/mp4") || (data.type=="video/quicktime")){
           const path = './public/upload/'+data.file;
           const stat = fs.statSync(path)
           const fileSize = stat.size
