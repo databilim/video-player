@@ -148,7 +148,7 @@ button.addEventListener("click",()=>{
 
     socket.on("video onay",(onay)=>{
      console.log(onay)
-      if(onay.type=="image"){
+      if(onay.type=="image/jpeg"){
         //$(".player").attr("poster","upload/video/"+onay.file)
         $(".player").hide()
         $(".slider").show()
@@ -175,6 +175,9 @@ button.addEventListener("click",()=>{
            }
         },100)
 
+      }
+      if(onay.type==null){
+        
       }
       
         

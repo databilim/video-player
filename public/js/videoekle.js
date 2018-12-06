@@ -7,18 +7,18 @@ var sira = $('.sira');
  
 
 $(".uploadButton").click(function (e) {
-    fd.append("file",input[0].files[0]);
-    fd.append("description", description[0].value);
-    fd.append("title", title[0].value);
-    fd.append("sira", sira[0].value);
-    fd.append("type", input[0].files[0].type);
+ 
  
     console.dir(input[0].files[0])
     if(!input[0].files[0]){
 
         alert("DOSYA SEÇMEDİNİZ ")
     }else{
-
+        fd.append("file",input[0].files[0]);
+        fd.append("description", description[0].value);
+        fd.append("title", title[0].value);
+        fd.append("sira", sira[0].value);
+        fd.append("type", input[0].files[0].type);
        // $("form").slideUp();
         var req =  $.ajax({
             xhr: function() {
@@ -34,7 +34,7 @@ $(".uploadButton").click(function (e) {
                             $(".progress-bar").html(" "+percentComplete+"%")
                         if (percentComplete === 100) {
 
-                                
+                            location.reload(); 
 
                         }
 
@@ -73,3 +73,15 @@ $(".uploadButton").click(function (e) {
     }
     return false;
 })
+
+
+
+sil(".videoSil","/admin/sil",function(data){
+        console.log(data)
+        $("#"+data.id).parent().parent().remove()
+})
+
+
+
+
+

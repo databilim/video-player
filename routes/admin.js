@@ -1,9 +1,12 @@
-var express = require('express');
-var router = express.Router();
-const fs = require('fs');
-var url = require('url');
-const VideoCount = require("../model/VideoCount");
-var loggedin = function (req, res, next) {
+var express         = require('express');
+var router          = express.Router();
+const fs            = require('fs');
+var url             = require('url');
+const VideoCount    = require("../model/VideoCount");
+const Video         = require("../model/Video")
+
+
+var loggedin        = function (req, res, next) {
     if (req.isAuthenticated()) {
       next()
     } else {
@@ -38,6 +41,36 @@ router.post("/videoCount",(req,res,next)=>{
                 res.json({error:err, code:5})
             }) 
             
+})
+
+router.post("/sil",loggedin,(req,res)=>{
+    let id = req.body.id
+    const promise = Video.findById(id)
+          promise.then((data)=>{
+
+            console.log(data)
+            Video.remove({_id:data._id},(err)=>{
+                if(!err){
+                    fs.unlinkSync('./public/upload/'+data.file)
+                    res.json({status:1,message:"Silindi",id:id})
+                }
+            })
+
+
+          }).catch((err)=>{
+
+            res.json(err)
+
+          })  
+    /* const promise = Video.remove({_id:id})
+         promise.then((data)=>{
+                console.log(data)
+                res.json({status:1,message:"Videonuz Silindi"})
+
+          }).catch(()=>{
+              res.json(err)
+          })
+    */
 })
 
 

@@ -41,14 +41,16 @@ router.get('/logout', function (req, res) {
 
 
 router.get('/video/:video_id', function(req, res) {
-  const fs = require('fs');
+ 
   const promise = Video.findById(req.params.video_id);
     promise.then((data) => {
       console.log(data.file)
-    if(data.type=="video"){
+    if(data.type=="video/mp4"){
           const path = './public/upload/'+data.file;
           const stat = fs.statSync(path)
           const fileSize = stat.size
+
+          console.log("DOSYA BUYUKLÜĞÜ",fileSize)
           const range = req.headers.range
           if (range) {
             const parts = range.replace(/bytes=/, "").split("-")

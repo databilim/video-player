@@ -4,7 +4,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title">Form row</h4>
+                    <h4 class="header-title">Form </h4>
                     <p class="text-muted font-13">
                         
                     </p>
@@ -52,3 +52,54 @@
   
     
     </script>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="header-title">Player Listeniz</h4>
+                <p class="text-muted font-13 mb-4">
+                   
+                </p>
+
+                <table id="datatable-buttons" class="table table-striped dt-responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th>Player TİPİ</th>
+                            <th>Adı</th>
+                            <th>Sıra</th>
+                            <th>Düzenle</th>
+                            
+                        </tr>
+                    </thead>
+                
+                
+                    <tbody>
+                        <% video.map(function(vdata){ %>
+                            <tr>
+                                    <td>
+                                            <%if(vdata.type=='image/jpeg'){ %>
+                                               <img width="40" src="/upload/<%=vdata.file%>">
+                                            <% } %>
+                                            <%if(vdata.type=='video/mp4'){ %>
+                                                <img width="40" src="/upload/<%=vdata.file%>">
+                                             <% } %>
+                                       </td>
+                                    <td><%=vdata.title%></td>
+                                    <td><%=vdata.sira%></td>
+                                    <td><button id="<%=vdata._id%>" type="button" class="btn btn-outline-danger btn-rounded waves-effect videoSil waves-light">Sil</button> </td>
+                                  
+                                </tr>
+                        <% })%>
+
+                        
+                        
+                    </tbody>
+                </table>
+                
+            </div> <!-- end card body-->
+        </div> <!-- end card -->
+    </div><!-- end col-->
+</div>
