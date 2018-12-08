@@ -21,13 +21,13 @@ router.get('/', function(req, res, next) {
   });
 
   router.get('/giris', function(req, res, next) {
-    res.render('admin/index', { vuser: {user:req.user,id:req.id},video: req.video , swarm:req.checkin,path: req.path});
+    res.render('admin/index', { vuser: {user:req.user,id:req.user.id},video: req.video , swarm:req.checkin,path: req.path});
     //res.render('index')
       console.log("CELLO",req.url)
 });
   
 router.get('/videoekle',loggedin,  (req, res, next)=> {
-    res.render('admin/index', { vuser: {user:req.user,id:req.id},video: req.video , swarm:req.checkin,path: req.path});
+    res.render('admin/index', { vuser: {user:req.user,id:req.user.id},video: req.video , swarm:req.checkin,path: req.path});
     console.log("CELLO",req.originalUrl)
 });
 
@@ -43,10 +43,21 @@ router.post("/videoCount",(req,res,next)=>{
             
 })
 router.get("/genelAyar",loggedin,(req,res,next)=>{
-
+        console.log(req.user.id)
         //res.send("genel ayar")
         //res.render("/admin/genelayar")
-        res.render('admin/index', { vuser: {user:req.user,id:req.id},video: req.video , swarm:req.checkin,path: req.path});
+        res.render('admin/index', 
+        { 
+            vuser:{
+                user:req.user,
+                id:req.id
+                 },
+                video: req.video ,
+                swarm:req.checkin,
+                path: req.path,
+                genelayar:req.GenelAyar
+          }
+        );
 
 })
 router.post("/sil",loggedin,(req,res)=>{
@@ -68,16 +79,10 @@ router.post("/sil",loggedin,(req,res)=>{
             res.json(err)
 
           })  
-    /* const promise = Video.remove({_id:id})
-         promise.then((data)=>{
-                console.log(data)
-                res.json({status:1,message:"Videonuz Silindi"})
-
-          }).catch(()=>{
-              res.json(err)
-          })
-    */
+     
 })
+
+
 
 
 

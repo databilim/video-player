@@ -1,24 +1,14 @@
 var fd = new FormData();
 var input = $('.file');
-var description = $('.description');
-var title = $('.title');
-var sira = $('.sira');
-
- 
-
-$(".uploadButton").click(function (e) {
- 
- 
-    console.dir(input[0].files[0])
+var userId = $('.userId');
+$(".logoYukle").click(function (e) {
     if(!input[0].files[0]){
 
         alert("DOSYA SEÇMEDİNİZ ")
     }else{
         fd.append("file",input[0].files[0]);
-        fd.append("description", description[0].value);
-        fd.append("title", title[0].value);
-        fd.append("sira", sira[0].value);
-        fd.append("type", input[0].files[0].type);
+        fd.append("userId",userId[0].value);
+    
        // $("form").slideUp();
         var req =  $.ajax({
             xhr: function() {
@@ -43,13 +33,13 @@ $(".uploadButton").click(function (e) {
 
                 return xhr;
             },
-            url: '/videoekle',
+            url: '/genelAyar/logoYukle',
             data: fd,
             processData: false,
             contentType: false,
             type: 'POST',
             success: function(data,textStatus, jqXHR){
-               console.log(data)
+                
                location.reload(); 
               if(Array.isArray(data) == true){
                    console.log(data)
@@ -66,17 +56,7 @@ $(".uploadButton").click(function (e) {
         });
 
     }
-    return false;
+
+
+  return false;
 })
-
-
-
-sil(".videoSil","/admin/sil",function(data){
-        console.log(data)
-        $("#"+data.id).parent().parent().remove()
-})
-
-
-
-
-

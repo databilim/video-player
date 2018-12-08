@@ -4,11 +4,34 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title">Form </h4>
+                    <h4 class="header-title">GENEL AYAR </h4>
                     <p class="text-muted font-13">
-                        
+                        <%if(genelayar){%>  
+                        <img src="/upload/<%=genelayar.logo  %>"> 
+                            <%}%>
                     </p>
+                    <form action="/logoEkle" method="post" id="upload" enctype="multipart/form-data">
+                        
+                        <div class="form-row">
+                               
+                            <div class="form-group col-md-6">
+                                     
+                                <label for="inputEmail4" class="col-form-label">Firma Logo </label>
+                                <input type="file" name="file" id="example-fileinput" class="file form-control-file">
+                            </div>
+                            <input type="hidden" name="userId" class="userId" value="<%=vuser.user.id%>">
+                            <button  type="submit" class="btn btn-primary logoYukle waves-effect waves-light">Logo Yükle</button>
+                            
+                        </div>
 
+                       <% console.log(vuser)%>
+
+                       
+                   
+                       
+
+
+                    </form>
                     
             </div> <!-- end card body-->
         </div> <!-- end card -->

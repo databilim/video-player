@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const fs = require('fs');
+const sharp = require('sharp');
 const Video = require("../model/Video")
+const GenelAyar = require("../model/GenelAyar")
 var loggedin = function (req, res, next) {
   if (req.isAuthenticated()) {
     next()
@@ -12,7 +14,19 @@ var loggedin = function (req, res, next) {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index',{ vuser: {user:req.user,id:req.id},video: req.video , swarm:req.checkin,path: req.path});
+  console.log(req.video)
+  res.render('index',
+      { 
+        vuser:{
+            user:req.user,
+            id:req.id
+             },
+            video: req.video ,
+            swarm:req.checkin,
+            path: req.path,
+            genelayar:req.GenelAyar
+      }
+      );
 });
 
 
@@ -27,9 +41,18 @@ router.get('/signup', function (req, res, next) {
 
 
 router.get('/profile', loggedin, function (req, res, next) {
-  res.render('admin/index', {
-    user: {user:req.user,id:req.id},video: req.video , swarm:req.checkin,path: req.path
-  })
+  res.render('admin/index', 
+  { 
+    vuser:{
+        user:req.user,
+        id:req.id
+         },
+        video: req.video ,
+        swarm:req.checkin,
+        path: req.path,
+        genelayar:req.GenelAyar
+  }
+  )
 });
 
 
@@ -106,7 +129,7 @@ router.post('/videoekle',loggedin,(req,res,next)=>{
   let files = req.files.file
   let fileName = randomSayi(1,9999999)+"_"+files.name;
   let serverFile = "public/upload/"+fileName;
-  files.mv(serverFile,(err)=>{
+    files.mv(serverFile,(err)=>{
     if(err){
       return res.status(500).send(err);
     }
@@ -115,12 +138,12 @@ router.post('/videoekle',loggedin,(req,res,next)=>{
     //res.send('File uploaded!');
 
     })
-  console.log(req.body)
-   req.body.file = fileName
- const video = new Video(req.body);
-  const promise = video.save()
+ 
+    req.body.file = fileName
+    const video = new Video(req.body);
+    const promise = video.save()
    //req.io.emit("checkin",req.body.checkin)
-   promise.then((video)=>{
+    promise.then((video)=>{
 
     res.json({status:1})
       }).catch((err)=>{
@@ -128,6 +151,12 @@ router.post('/videoekle',loggedin,(req,res,next)=>{
           res.json({error:err, code:5})
       })
 })
+
+
+
+
+
+
 
 function randomSayi(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
