@@ -3,6 +3,7 @@ var input = $('.file');
 var description = $('.description');
 var title = $('.title');
 var sira = $('.sira');
+var userId = $('.userId');
 
  
 
@@ -18,6 +19,7 @@ $(".uploadButton").click(function (e) {
         fd.append("description", description[0].value);
         fd.append("title", title[0].value);
         fd.append("sira", sira[0].value);
+        fd.append("userId", userId[0].value);
         fd.append("type", input[0].files[0].type);
        // $("form").slideUp();
         var req =  $.ajax({

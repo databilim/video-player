@@ -27,7 +27,17 @@ router.get('/', function(req, res, next) {
 });
   
 router.get('/videoekle',loggedin,  (req, res, next)=> {
-    res.render('admin/index', { vuser: {user:req.user,id:req.user.id},video: req.video , swarm:req.checkin,path: req.path});
+    res.render('admin/index', 
+    {
+        vuser: {
+            user:req.user,
+            id:req.user.id
+        },
+        video: req.video ,
+        swarm:req.checkin,
+        path: req.path
+    }
+    );
     console.log("CELLO",req.originalUrl)
 });
 

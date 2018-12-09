@@ -7,7 +7,7 @@
 var app = require('../app') ;
 var debug = require('debug')('login:server');
 var http = require('http');
-
+require('dotenv').config()
 /**
  * Get port from environment and store in Express.
  */
@@ -41,8 +41,8 @@ io.on('connection', socket => {
 
   const VideoCount = require("../model/VideoCount")
   const Video = require("../model/Video")
-  var videoCek = Video.find()
-  var countVideo = VideoCount.findOne({}); 
+  var videoCek = Video.find({userId:process.env.USER_ID})
+  var countVideo = VideoCount.findOne({userId:process.env.USER_ID}); 
 
   socket.on("video start",(data)=>{
       videoCek.then((videoData)=>{
