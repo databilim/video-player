@@ -52,7 +52,7 @@ $(".uploadButton").click(function (e) {
             type: 'POST',
             success: function(data,textStatus, jqXHR){
                console.log(data)
-               location.reload(); 
+               //location.reload(); 
               if(Array.isArray(data) == true){
                    console.log(data)
                   data.shift()

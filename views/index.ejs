@@ -65,8 +65,7 @@
 </head>
 <body>
 
-
-  
+ 
    <div class="start"><img src="img/buton.svg"></div>
     <div id="cxPlayer">
         
@@ -162,7 +161,7 @@ button.addEventListener("click",()=>{
         $(".slider").hide()
         $(".player").show()
         $(".player").attr("src","/video/"+onay._id)
-        setTimeout(()=>{ video.play() ;   },500)
+        setTimeout(()=>{ video.play() ; video.muted = true; },500)
         console.log("video  ")
         var sil =  setInterval(()=>{
           var videoToplamSure = video.duration
@@ -236,5 +235,6 @@ var elem = document.querySelector("#cxPlayer");
 } 
 
   </script>
+ 
 </body>
 </html>

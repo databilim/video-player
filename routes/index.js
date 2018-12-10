@@ -14,19 +14,21 @@ var loggedin = function (req, res, next) {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  console.log(req.video)
+ 
   res.render('index',
-      { 
-        vuser:{
-            user:req.user,
-            id:req.id
-             },
-            video: req.video ,
-            swarm:req.checkin,
-            path: req.path,
-            genelayar:req.GenelAyar
-      }
-      );
+    { 
+      vuser:{
+          user:req.user,
+          id:req.id
+          },
+          video: req.video ,
+          swarm:req.checkin,
+          path: req.path,
+          genelayar:req.GenelAyar
+    }
+  );
+ 
+  
 });
 
 
