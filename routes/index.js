@@ -1,9 +1,13 @@
-var express = require('express');
-var router = express.Router();
-const fs = require('fs');
-const sharp = require('sharp');
-const Video = require("../model/Video")
+var express     = require('express');
+var router      = express.Router();
+const moment    = require('moment');
+const mongoose  = require('mongoose');
+const fs        = require('fs');
+const sharp     = require('sharp');
+const Video     = require("../model/Video")
 const GenelAyar = require("../model/GenelAyar")
+const Swarm     = require("../model/Swarm")
+
 var loggedin = function (req, res, next) {
   if (req.isAuthenticated()) {
     next()
@@ -43,18 +47,36 @@ router.get('/signup', function (req, res, next) {
 
 
 router.get('/profile', loggedin, function (req, res, next) {
-  res.render('admin/index', 
-  { 
-    vuser:{
-        user:req.user,
-        id:req.id
-         },
-        video: req.video ,
-        swarm:req.checkin,
-        path: req.path,
-        genelayar:req.GenelAyar
-  }
-  )
+  moment.locale("en");
+  const dun = moment().subtract(1, 'days').format('llll')
+  const today = moment().format('llll')
+   console.log(dun , today)
+  const promise = Swarm.find({
+                    userId:mongoose.Types.ObjectId(req.user.id),
+                    "tarih": {
+                      "$gte": dun, 
+                      "$lt": today}
+                    });
+
+  promise.then((data)=>{
+
+        
+
+        res.render('admin/index', 
+        { 
+          vuser:{
+              user:req.user,
+              id:req.user.id
+              },
+              video: req.video ,
+              swarm:req.checkin,
+              path: req.path,
+              genelayar:req.GenelAyar,
+              swarm:data
+        })
+        })
+   
+  
 });
 
 

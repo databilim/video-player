@@ -16,6 +16,7 @@ module.exports = (req,res,next)=>{
                 if(data==null){
 
                     req.GenelAyar = null
+                   
                 }else{
                     req.GenelAyar = data
                 }

@@ -9,6 +9,10 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
 const fileUpload = require('express-fileupload');
+var moment = require('moment');
+moment.locale("tr");
+
+global.moment = moment;
 require('./passport')(passport)
 
 const db = require('./helper/db.js')();

@@ -11,7 +11,7 @@
 <head>
 <meta charset="utf-8">
 <title>Celalettin Erbulut Video Player</title>
-
+<link href="https://fonts.googleapis.com/css?family=Righteous&amp;subset=latin-ext" rel="stylesheet">
 <link rel="stylesheet" href="css/swiper.min.css">
 <link rel="stylesheet" href="css/style.css">
 <script src="/socket.io/socket.io.js"></script>
@@ -65,16 +65,18 @@
 </head>
 <body>
 
- 
+ <% if(genelayar!=null){%>
+  
+    <div class="userId" style="display:none;" userId="<%=genelayar.userId%>" ></div>
    <div class="start"><img src="img/buton.svg"></div>
     <div id="cxPlayer">
         
         <img class="logos" src="/upload/<%=genelayar.logo%>">
       <video height="1000" width="100%" class="player" controls ></video>
       <img class="slider" src="">
-
+   
     <svg class="dataSvg" 
-		height="100%" width="100%" viewBox="0 0 100 100"  preserveAspectRatio="none">
+		height="1080" width="100%" viewBox="0 0 100 100"  preserveAspectRatio="none">
 		  <polygon class="animeSheet" points="196,100 0,100 0,0 33.3,0 196,0 "/>
 		 </svg>
 
@@ -87,42 +89,27 @@
           <hr>
           <div class="contentBaslik">
             <div class="contentBaslikSol"><h2> </h2> </div>
-            <div class="contentBaslikSag"><h2> Toplam <span><%= swarm %></span> Check-in</h2> </div>
+            <div class="contentBaslikSag"><h2> Toplam <span class="toplamcheckin"><%= swarm %></span> Check-in</h2> </div>
           </div>
-          <!-- <div class="contentMekandakiKisiler"> 
-            <ul>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-              <li><img src="img/mekandakiKisiler.png" ></li>
-            </ul>
-          </div>-->
+          
           <div class="contentIstatistik">
-            <div class="bosluk"></div>
+             
             <hr>
-            <div class="istatstikToplamCheckin">Toplam Check-in : 58212</div>
-            <div class="istatstikToplamMayor">Mayor : <span>505454</span></div>
-            <div class="bosluk"></div>
+            <!--<div class="istatstikToplamCheckin">Toplam Check-in : 58212</div>
+            <div class="istatstikToplamMayor">Mayor : <span>505454</span></div>-->
+             
             <hr>
           </div>
         </div>
- </div>     
+ 
+
+  </div>  
+ </div>   
  <script>
     $(".player").hide()
     $(".slider").hide()
 var socket = io();
-var dataSvg = document.getElementsByClassName("dataSvg")[0].style.display="none";
-		console.log(dataSvg)
+ 
 function  Get(theUrl)
 {
     var xmlHttp = new XMLHttpRequest();
@@ -161,7 +148,7 @@ button.addEventListener("click",()=>{
         $(".slider").hide()
         $(".player").show()
         $(".player").attr("src","/video/"+onay._id)
-        setTimeout(()=>{ video.play() ; video.muted = true; },500)
+        setTimeout(()=>{ video.play() ;   },500)
         console.log("video  ")
         var sil =  setInterval(()=>{
           var videoToplamSure = video.duration
@@ -185,20 +172,29 @@ button.addEventListener("click",()=>{
    
    
 })
-
+var toplamcheckin = parseInt($(".toplamcheckin")[0].innerHTML ) ;
+var userIdsoc = $(".userId").attr("userId");
 var socket2 = io("https://erbulut.com");
  socket2.on("checkin",function(data){
-			document.getElementsByClassName("dataSvg")[0].style.display="block";
-				var json = JSON.parse(data);
+    
+  console.log( data.room  +"  "+userIdsoc)
+
+    if(data.room == userIdsoc ){
+    
+          toplamcheckin++
+          $(".toplamcheckin")[0].innerHTML =  toplamcheckin
+   
+    document.getElementsByClassName("dataSvg")[0].style.display="block";
+    
+				var json = JSON.parse(data.checkin);
 				var cekIsism = document.querySelector(".adi").innerHTML = json.user.firstName + " "+ json.user.lastName ;
 				var userFoto = document.querySelector(".userFoto").src =json.user.photo.prefix + json.user.id + json.user.photo.suffix  ;
 					//json.user.photo.prefix + json.user.id + json.user.photo.suffix 
 				//console.dir(json)
 				//console.dir(userFoto)
-				
-			console.log(data)
+   
 
-			var morphing = anime({
+        var morphing = anime({
 			targets: '.animeSheet',
 			points: [
 				{ value: '196,100 0,100 0,0 33.3,0 60.3,67.2' },
@@ -219,6 +215,13 @@ var socket2 = io("https://erbulut.com");
         var dataSvg = document.getElementsByClassName("dataSvg")[0].style.display="none";
 			},10000)
 
+     
+
+			
+ 
+    }
+			
+
 		  })
 
 function openFullscreen() {
@@ -235,6 +238,8 @@ var elem = document.querySelector("#cxPlayer");
 } 
 
   </script>
- 
+   <%}else{%>
+    <h1>Kullanıcı Oluşturunuz </h1>
+    <%}%>
 </body>
 </html>
